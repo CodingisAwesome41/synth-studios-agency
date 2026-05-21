@@ -63,10 +63,22 @@ export default async function AdminDashboard() {
 
               {/* Idea Pillar */}
               <div className="md:w-3/4 bg-background p-6 rounded-lg border border-neutral-800/50">
-                <h4 className="text-sm text-gray-400 font-medium mb-2 uppercase tracking-wider">The Vision</h4>
-                <p className="text-gray-300 leading-relaxed">
-                  {pitch.idea_description}
-                </p>
+                <div className="flex justify-between items-start mb-2">
+                  <h4 className="text-sm text-gray-400 font-medium uppercase tracking-wider">The Vision</h4>
+    
+                  {/* AI Screener Tag */}
+                  <div className={`text-xs font-bold px-3 py-1 rounded-full border ${
+                    pitch.ai_assessment === 'High Probability' ? 'bg-purple-500/10 text-purple-400 border-purple-500/20' :
+                    pitch.ai_assessment === 'Scope Mismatch' ? 'bg-red-500/10 text-red-400 border-red-500/20' :
+                    'bg-blue-500/10 text-blue-400 border-blue-500/20'
+              }`}>
+                🤖 AI: {pitch.ai_assessment || 'Awaiting Analysis'}
+                </div>
+              </div>
+
+              <p className="text-gray-300 leading-relaxed">
+                {pitch.idea_description}
+              </p>
                 
                 {/* Action Buttons */}
                 <div className="mt-6 flex gap-4 pt-6 border-t border-neutral-800/50">
