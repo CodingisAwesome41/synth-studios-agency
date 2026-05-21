@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@theme {
+  /* Our Custom Color Palette */
+  --color-background: #0a0a0a;
+  --color-surface: #171717;
+  --color-primary: #ffffff;
+  --color-accent: #3b82f6;
+  
+  /* Clean Typography */
+  --font-sans: var(--font-inter), sans-serif;
+}
+
+/* Apply the dark theme globally */
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: var(--color-primary);
+    -webkit-font-smoothing: antialiased;
+  }
+}
