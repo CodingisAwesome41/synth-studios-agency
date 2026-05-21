@@ -69,9 +69,36 @@ export default async function AdminDashboard() {
                 
                 {/* Action Buttons */}
                 <div className="mt-6 flex gap-4 pt-6 border-t border-neutral-800/50">
-                  <button className="bg-accent hover:bg-blue-600 text-white text-sm font-medium py-2 px-6 rounded transition-colors">
-                    Approve & Quote
-                  </button>
+                  <button 
+                    onClick={async (e) => {
+                      const btn = e.currentTarget;
+                      btn.innerText = "Generating Link...";
+                      btn.disabled = true;
+
+                      // Call our new Stripe API
+                      const response = await fetch('/api/checkout', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                          clientName: pitch.client_name,
+                          email: pitch.email,
+                          projectTitle: pitch.project_title,
+                        }),
+                      });
+
+                      const data = await response.json();
+    
+                      // Redirect the admin to the newly generated Stripe checkout to review it
+                      if (data.url) {
+                        window.location.href = data.url;
+                      } else {
+                        btn.innerText = "Error - Check Console";
+                      }
+                    }}
+                    className="bg-accent hover:bg-blue-600 text-white text-sm font-medium py-2 px-6 rounded transition-colors disabled:opacity-50"
+                   >
+                    Approve & Generate Invoice
+                   </button>
                   <button className="bg-transparent border border-red-900/50 text-red-500 hover:bg-red-950/30 text-sm font-medium py-2 px-6 rounded transition-colors">
                     Pass
                   </button>
