@@ -1,48 +1,54 @@
-export default function Portfolio() {
-  const projects = [
-    {
-      title: "Aura Fintech Dashboard",
-      category: "Full-Stack Web App",
-      description: "A secure, real-time banking portal built with Next.js and PostgreSQL. Features dynamic data visualization and role-based access.",
-    },
-    {
-      title: "Lumina Engine",
-      category: "SaaS Platform",
-      description: "An AI-driven content generation tool. We built the complete infrastructure from the landing page to the Stripe subscription back-end.",
-    },
-    {
-      title: "Velocity Commerce",
-      category: "E-Commerce Headless",
-      description: "A sub-second load time custom storefront connected to a headless Shopify backend, resulting in a 40% conversion rate increase.",
-    },
-    {
-      title: "Oasis Internal Tools",
-      category: "Enterprise CRM",
-      description: "A custom Supabase-powered dashboard replacing five different fragmented software tools for a logistics company.",
-    }
-  ];
+"use client";
 
+import { motion } from "framer-motion";
+
+const projects = [
+  { title: "Project Nova", category: "Fintech Platform", tag: "React / Node", color: "from-blue-500/20" },
+  { title: "Aura Commerce", category: "E-Commerce", tag: "Next.js / Stripe", color: "from-purple-500/20" },
+  { title: "Nexus AI", category: "Machine Learning UI", tag: "Python / React", color: "from-emerald-500/20" },
+  { title: "Atlas Core", category: "Enterprise Dashboard", tag: "Supabase / Vue", color: "from-orange-500/20" }
+];
+
+export default function Portfolio() {
   return (
-    <main className="min-h-screen p-6 lg:p-24 max-w-6xl mx-auto">
-      <div className="space-y-4 mb-16">
-        <h1 className="text-4xl md:text-5xl font-light tracking-tight text-white">
-          Our <span className="font-semibold text-accent">Proof of Work.</span>
-        </h1>
-        <p className="text-gray-400 text-lg max-w-2xl">
-          We don't just build websites; we engineer digital products. Here are a few examples of concepts we've turned into scalable realities.
-        </p>
+    <main className="max-w-7xl mx-auto px-6 pb-32">
+      <div className="mb-20">
+        <motion.h1 
+          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+          className="text-5xl md:text-7xl font-bold tracking-tighter mb-6"
+        >
+          THE ARCHIVES.
+        </motion.h1>
+        <motion.p 
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
+          className="text-gray-400 text-xl font-light max-w-2xl"
+        >
+          A selection of enterprise architectures, scaled platforms, and digital realities engineered by our team.
+        </motion.p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {projects.map((project, index) => (
-          <div key={index} className="group bg-surface p-8 rounded-2xl border border-neutral-800 hover:border-accent/50 transition-colors cursor-pointer">
-            <div className="w-full h-48 bg-neutral-900 rounded-lg mb-6 flex items-center justify-center border border-neutral-800 group-hover:border-neutral-700 transition-colors">
-              <span className="text-neutral-600 text-sm font-medium uppercase tracking-widest">Visual Mockup</span>
+        {projects.map((project, i) => (
+          <motion.div 
+            key={i}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.1, duration: 0.6 }}
+            className="group relative h-96 rounded-3xl bg-white/[0.02] border border-white/5 overflow-hidden cursor-pointer"
+          >
+            <div className={`absolute inset-0 bg-gradient-to-br ${project.color} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700`} />
+            
+            <div className="absolute inset-0 p-8 flex flex-col justify-end">
+              <div className="translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                <span className="text-xs font-bold uppercase tracking-widest text-purple-400 mb-2 block">{project.category}</span>
+                <h3 className="text-3xl font-semibold mb-4 text-white">{project.title}</h3>
+                <span className="inline-block px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-xs text-gray-300 border border-white/5">
+                  {project.tag}
+                </span>
+              </div>
             </div>
-            <p className="text-accent text-sm font-medium mb-2">{project.category}</p>
-            <h3 className="text-2xl font-medium text-white mb-3">{project.title}</h3>
-            <p className="text-gray-400 leading-relaxed">{project.description}</p>
-          </div>
+          </motion.div>
         ))}
       </div>
     </main>
