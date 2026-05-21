@@ -1,9 +1,6 @@
 import { NextResponse } from "next/server";
-import OpenAI from "openai";
 import { createClient } from "@supabase/supabase-js";
 
-// Initialize AI and Database
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
@@ -11,40 +8,28 @@ const supabase = createClient(
 
 export async function POST(req: Request) {
   try {
-    // 1. Receive the pitch from the public website form
-    const { clientName, email, budget, ideaDescription } = await req.json();
+    // 1. Added projectTitle to the incoming request
+    const { clientName, email, projectTitle, budget, ideaDescription } = await req.json();
 
-    // 2. Send the idea to OpenAI for instant screening
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini", // Fast, cheap, and highly intelligent
-      messages: [
-        { 
-          role: "system", 
-          content: "You are an elite tech agency project screener. Read the user's project idea and budget. Classify it strictly as one of three tags: 'High Probability', 'Promising but Needs Scoping', or 'Scope Mismatch'. Do not output anything else except the exact tag." 
-        },
-        { 
-          role: "user", 
-          content: `Idea: ${ideaDescription}\nBudget: ${budget}` 
-        }
-      ]
-    });
+    // TEMPORARY BYPASS: Randomly assign a tag instead of paying OpenAI
+    const tags = ['High Probability', 'Promising but Needs Scoping', 'Scope Mismatch'];
+    const mockAiTag = tags[Math.floor(Math.random() * tags.length)];
 
-    const aiTag = completion.choices[0].message.content || 'Analysis Failed';
-
-    // 3. Save the pitch AND the AI's verdict directly into Supabase
+    // 2. Added project_title to the database insert
     const { error } = await supabase
       .from("client_pitches")
       .insert([{
         client_name: clientName,
         email: email,
+        project_title: projectTitle, 
         estimated_budget: budget,
         idea_description: ideaDescription,
-        ai_assessment: aiTag
+        ai_assessment: mockAiTag
       }]);
 
     if (error) throw error;
 
-    return NextResponse.json({ success: true, ai_assessment: aiTag });
+    return NextResponse.json({ success: true, ai_assessment: mockAiTag });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
