@@ -9,10 +9,8 @@ const supabase = createClient(
 export async function POST(req: Request) {
   try {
     const { clientRef, clientEmail, ticketType, description } = await req.json();
-
     const ticketId = "TCKT-" + Math.random().toString(36).substring(2, 8).toUpperCase();
 
-    // Just save to Supabase. No AI, No Resend.
     const { error } = await supabase
       .from("support_tickets")
       .insert([{
